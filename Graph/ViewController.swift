@@ -18,8 +18,10 @@ class ViewController: UIViewController {
         graphView.clipsToBounds = true
         graphView.layer.cornerRadius = 8.0
         
-        graphView.graphPoints = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        graphView.graphNames = ["One", "Two", "Thr", "Fou", "Fiv", "Six", "Sev", "Eig", "Nin"]
+        let points: [Double] = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        let columnNames = ["One", "Two", "Thr", "Fou", "Fiv", "Six", "Sev", "Eig", "Nin"]
+
+        graphView.configure(withPoints: points, columnNames: columnNames, title: "Awesome graph")
     }
 
     @IBAction func changeTap(_ sender: Any) {

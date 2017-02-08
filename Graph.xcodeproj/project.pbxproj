@@ -42,8 +42,8 @@
 		A88EE0191E4B7BFC000FE5A6 /* Graph */ = {
 			isa = PBXGroup;
 			children = (
-				A88EE01A1E4B7C11000FE5A6 /* GraphLayer.swift */,
 				A88EE01B1E4B7C11000FE5A6 /* GraphView.swift */,
+				A88EE01A1E4B7C11000FE5A6 /* GraphLayer.swift */,
 			);
 			path = Graph;
 			sourceTree = "<group>";

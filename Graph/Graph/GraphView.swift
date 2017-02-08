@@ -8,7 +8,26 @@
 
 import UIKit
 
-@IBDesignable class GraphView: UIView {
+protocol GraphViewUsageProtocol {
+    
+    /// At first you need to configure graph with launch data. IMPORTANT!!! Count of 
+    /// column names and points must be same
+    ///
+    /// - Parameters:
+    ///   - points: Launch array of points
+    ///   - columnNames: Bottom located column names.
+    ///   - title: Title of graph
+    func configure(withPoints points: [Double], columnNames: [String], title: String?)
+    
+    
+    /// Use this method to animate graph with other points. IMPORTANT!!! Count of
+    /// old and current points must be same
+    ///
+    /// - Parameter points: Array of points
+    func animate(withPoints points: [Double])
+}
+
+@IBDesignable class GraphView: UIView, GraphViewUsageProtocol {
     
     @IBInspectable var startColor: UIColor = UIColor.red
     @IBInspectable var endColor: UIColor = UIColor.green
@@ -16,11 +35,9 @@ import UIKit
     @IBInspectable var endGraphColor: UIColor = UIColor.green
     @IBInspectable var fontColor: UIColor = UIColor.white
     
-    /*must be initialized*/
     var graphPoints: [Double]!
-    var graphNames: [String]!
-    var title = "Awesome Graph"
-    /**/
+    var graphColumnNames: [String]!
+    var title = ""
     
     private var graphLayer = GraphLayer()
     private var gradient = CAGradientLayer()
@@ -28,6 +45,14 @@ import UIKit
     private var linesLayer = CAShapeLayer()
     private var dotsLayer = [CAShapeLayer]()
     private var start = true
+    
+    required override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -176,7 +201,7 @@ import UIKit
                                           y: pointY - labelHeight/2,
                                           width: labelWidth,
                                           height: labelHeight))
-            label.text = String(describing: graphNames[i])
+            label.text = String(describing: graphColumnNames[i])
             label.font = label.font.withSize(labelSize)
             label.textColor = fontColor
             label.textAlignment = .center
@@ -274,6 +299,14 @@ import UIKit
             i += 1
             
             dot.path = circle.cgPath
+        }
+    }
+    
+    func configure(withPoints points: [Double], columnNames: [String], title: String?) {
+        graphPoints = points
+        graphColumnNames = columnNames
+        if let title = title {
+            self.title = title
         }
     }
 
