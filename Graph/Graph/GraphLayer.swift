@@ -10,7 +10,7 @@ import UIKit
 
 class GraphLayer: CAShapeLayer {
     
-    var graphPoints: [Int]!
+    var graphPoints: [Double]!
     var graphPath: UIBezierPath!
     var margin: CGFloat = 20.0
     var topBorder:CGFloat = 60.0
@@ -21,7 +21,7 @@ class GraphLayer: CAShapeLayer {
     var height: CGFloat!
     private var parentsBounds: CGRect!
 
-    func fillProperties(parentsBounds: CGRect, points: [Int]) {
+    func fillProperties(parentsBounds: CGRect, points: [Double]) {
         self.parentsBounds = parentsBounds
         self.width = parentsBounds.size.width
         self.height = parentsBounds.size.height
@@ -31,7 +31,7 @@ class GraphLayer: CAShapeLayer {
         fillColor = UIColor.white.cgColor
     }
     
-    func rectangle(withPoints points: [Int]) -> UIBezierPath {
+    func rectangle(withPoints points: [Double]) -> UIBezierPath {
         graphPoints = points
         
         graphHeight = height - topBorder - bottomBorder
@@ -62,7 +62,7 @@ class GraphLayer: CAShapeLayer {
         return clippingPath
     }
     
-    func columnYPoint(graphPoint: Int) -> CGFloat {
+    func columnYPoint(graphPoint: Double) -> CGFloat {
         let maxValue = graphPoints.max()
         var y:CGFloat = CGFloat(graphPoint) / CGFloat(maxValue!) * self.graphHeight
         y = self.graphHeight + self.topBorder - y

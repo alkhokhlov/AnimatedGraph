@@ -11,7 +11,6 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet var graphView: GraphView!
-//    @IBOutlet var graphView: GraphViewObjC!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,9 +23,9 @@ class ViewController: UIViewController {
     }
 
     @IBAction func changeTap(_ sender: Any) {
-        var points = [Int]()
+        var points = [Double]()
         for _ in 0..<9 {
-            let point = Int(arc4random())%10
+            let point = Double(arc4random()).truncatingRemainder(dividingBy: 10)
             points.append(point)
         }
         

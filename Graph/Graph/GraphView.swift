@@ -17,7 +17,7 @@ import UIKit
     @IBInspectable var fontColor: UIColor = UIColor.white
     
     /*must be initialized*/
-    var graphPoints: [Int]!
+    var graphPoints: [Double]!
     var graphNames: [String]!
     var title = "Awesome Graph"
     /**/
@@ -218,7 +218,7 @@ import UIKit
                                     options: CGGradientDrawingOptions(rawValue: 0))
     }
     
-    func animate(withPoints points: [Int]) {
+    func animate(withPoints points: [Double]) {
         let previousHighestY = graphLayer.highestYPoint
         let previousLine = graphLayer.graphPath.cgPath
         

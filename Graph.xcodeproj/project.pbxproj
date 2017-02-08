@@ -7,23 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A888305C1E38E7640079DEE6 /* GraphViewObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = A888305B1E38E7640079DEE6 /* GraphViewObjC.m */; };
-		A888305F1E38E9130079DEE6 /* GraphLayerObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = A888305E1E38E9130079DEE6 /* GraphLayerObjC.m */; };
+		A88EE01C1E4B7C11000FE5A6 /* GraphLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88EE01A1E4B7C11000FE5A6 /* GraphLayer.swift */; };
+		A88EE01D1E4B7C11000FE5A6 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88EE01B1E4B7C11000FE5A6 /* GraphView.swift */; };
 		A8CC24841E363656007E1E03 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CC24831E363656007E1E03 /* AppDelegate.swift */; };
 		A8CC24861E363656007E1E03 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CC24851E363656007E1E03 /* ViewController.swift */; };
 		A8CC24891E363656007E1E03 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8CC24871E363656007E1E03 /* Main.storyboard */; };
 		A8CC248B1E363656007E1E03 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8CC248A1E363656007E1E03 /* Assets.xcassets */; };
 		A8CC248E1E363656007E1E03 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8CC248C1E363656007E1E03 /* LaunchScreen.storyboard */; };
-		A8CC24981E373F2F007E1E03 /* GraphLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CC24971E373F2F007E1E03 /* GraphLayer.swift */; };
-		A8CC249A1E374056007E1E03 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CC24991E374056007E1E03 /* GraphView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A88830591E38E7640079DEE6 /* Graph-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Graph-Bridging-Header.h"; sourceTree = "<group>"; };
-		A888305A1E38E7640079DEE6 /* GraphViewObjC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphViewObjC.h; sourceTree = "<group>"; };
-		A888305B1E38E7640079DEE6 /* GraphViewObjC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraphViewObjC.m; sourceTree = "<group>"; };
-		A888305D1E38E9130079DEE6 /* GraphLayerObjC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphLayerObjC.h; sourceTree = "<group>"; };
-		A888305E1E38E9130079DEE6 /* GraphLayerObjC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraphLayerObjC.m; sourceTree = "<group>"; };
+		A88EE01A1E4B7C11000FE5A6 /* GraphLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphLayer.swift; sourceTree = "<group>"; };
+		A88EE01B1E4B7C11000FE5A6 /* GraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 		A8CC24801E363656007E1E03 /* Graph.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Graph.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8CC24831E363656007E1E03 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A8CC24851E363656007E1E03 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -31,8 +26,6 @@
 		A8CC248A1E363656007E1E03 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A8CC248D1E363656007E1E03 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A8CC248F1E363656007E1E03 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A8CC24971E373F2F007E1E03 /* GraphLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphLayer.swift; sourceTree = "<group>"; };
-		A8CC24991E374056007E1E03 /* GraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +39,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A88EE0191E4B7BFC000FE5A6 /* Graph */ = {
+			isa = PBXGroup;
+			children = (
+				A88EE01A1E4B7C11000FE5A6 /* GraphLayer.swift */,
+				A88EE01B1E4B7C11000FE5A6 /* GraphView.swift */,
+			);
+			path = Graph;
+			sourceTree = "<group>";
+		};
 		A8CC24771E363656007E1E03 = {
 			isa = PBXGroup;
 			children = (
@@ -65,19 +67,13 @@
 		A8CC24821E363656007E1E03 /* Graph */ = {
 			isa = PBXGroup;
 			children = (
+				A88EE0191E4B7BFC000FE5A6 /* Graph */,
 				A8CC24831E363656007E1E03 /* AppDelegate.swift */,
 				A8CC24851E363656007E1E03 /* ViewController.swift */,
-				A8CC24991E374056007E1E03 /* GraphView.swift */,
-				A8CC24971E373F2F007E1E03 /* GraphLayer.swift */,
-				A888305A1E38E7640079DEE6 /* GraphViewObjC.h */,
-				A888305B1E38E7640079DEE6 /* GraphViewObjC.m */,
-				A888305D1E38E9130079DEE6 /* GraphLayerObjC.h */,
-				A888305E1E38E9130079DEE6 /* GraphLayerObjC.m */,
 				A8CC24871E363656007E1E03 /* Main.storyboard */,
 				A8CC248A1E363656007E1E03 /* Assets.xcassets */,
 				A8CC248C1E363656007E1E03 /* LaunchScreen.storyboard */,
 				A8CC248F1E363656007E1E03 /* Info.plist */,
-				A88830591E38E7640079DEE6 /* Graph-Bridging-Header.h */,
 			);
 			path = Graph;
 			sourceTree = "<group>";
@@ -157,11 +153,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A8CC24861E363656007E1E03 /* ViewController.swift in Sources */,
-				A888305C1E38E7640079DEE6 /* GraphViewObjC.m in Sources */,
-				A888305F1E38E9130079DEE6 /* GraphLayerObjC.m in Sources */,
 				A8CC24841E363656007E1E03 /* AppDelegate.swift in Sources */,
-				A8CC24981E373F2F007E1E03 /* GraphLayer.swift in Sources */,
-				A8CC249A1E374056007E1E03 /* GraphView.swift in Sources */,
+				A88EE01C1E4B7C11000FE5A6 /* GraphLayer.swift in Sources */,
+				A88EE01D1E4B7C11000FE5A6 /* GraphView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,7 +282,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = kh.Graph;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Graph/Graph-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
@@ -304,7 +297,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = kh.Graph;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Graph/Graph-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
