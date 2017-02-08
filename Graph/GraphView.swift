@@ -12,14 +12,22 @@ import UIKit
     
     @IBInspectable var startColor: UIColor = UIColor.red
     @IBInspectable var endColor: UIColor = UIColor.green
+    @IBInspectable var startGraphColor: UIColor = UIColor.red
+    @IBInspectable var endGraphColor: UIColor = UIColor.green
+    @IBInspectable var fontColor: UIColor = UIColor.white
     
-    var graphLayer = GraphLayer()
+    /*must be initialized*/
     var graphPoints: [Int]!
-    var gradient = CAGradientLayer()
-    var graphLineLayer = CAShapeLayer()
-    var linesLayer = CAShapeLayer()
-    var dotsLayer = [CAShapeLayer]()
-    var start = true
+    var graphNames: [String]!
+    var title = "Awesome Graph"
+    /**/
+    
+    private var graphLayer = GraphLayer()
+    private var gradient = CAGradientLayer()
+    private var graphLineLayer = CAShapeLayer()
+    private var linesLayer = CAShapeLayer()
+    private var dotsLayer = [CAShapeLayer]()
+    private var start = true
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,10 +35,10 @@ import UIKit
         layer.addSublayer(graphLayer)
         
         gradient.mask = graphLayer
-        gradient.colors = [startColor.cgColor, endColor.cgColor]
+        gradient.colors = [startGraphColor.cgColor, endGraphColor.cgColor]
         layer.addSublayer(gradient)
         
-        graphLineLayer.strokeColor = UIColor.white.cgColor
+        graphLineLayer.strokeColor = fontColor.cgColor
         graphLineLayer.fillColor = UIColor.clear.cgColor
         graphLineLayer.lineWidth = 2.0
         layer.addSublayer(graphLineLayer)
@@ -40,6 +48,8 @@ import UIKit
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        
+        removeLabels()
         
         graphLayer.fillProperties(parentsBounds: bounds, points: graphPoints)
         
@@ -58,22 +68,52 @@ import UIKit
         
         graphLineLayer.path = graphLayer.graphPath.cgPath
         
+        titleLabel()
         lines()
     }
     
-    func lines() {
+    private func removeLabels() {
+        for subview in subviews {
+            if subview is UILabel {
+                subview.removeFromSuperview()
+            }
+        }
+    }
+    
+    private func titleLabel() {
+        let margin: CGFloat = 8
+        let labelHeight: CGFloat = 25
+        let labelSize: CGFloat = 16
+        
+        let label = UILabel(frame: CGRect(x: margin,
+                                          y: margin,
+                                          width: frame.size.width - margin,
+                                          height: labelHeight))
+        label.text = title
+        label.font = UIFont.boldSystemFont(ofSize: labelSize)
+        label.textColor = fontColor
+        label.textAlignment = .center
+        addSubview(label)
+    }
+    
+    private func lines() {
         let linePath = UIBezierPath()
         
         //top line
-        linePath.move(to: CGPoint(x: graphLayer.margin, y: graphLayer.topBorder))
+        linePath.move(to: CGPoint(x: graphLayer.margin,
+                                  y: graphLayer.topBorder))
         linePath.addLine(to: CGPoint(x: graphLayer.width - graphLayer.margin,
                                      y: graphLayer.topBorder))
+        
+        
         
         //center line
         linePath.move(to: CGPoint(x: graphLayer.margin,
                                   y: graphLayer.graphHeight/2 + graphLayer.topBorder))
         linePath.addLine(to: CGPoint(x: graphLayer.width - graphLayer.margin,
                                      y: graphLayer.graphHeight/2 + graphLayer.topBorder))
+        
+        
         
         //bottom line
         linePath.move(to: CGPoint(x: graphLayer.margin,
@@ -82,13 +122,69 @@ import UIKit
                                      y: graphLayer.height - graphLayer.bottomBorder))
         
         linesLayer.path = linePath.cgPath
-        linesLayer.strokeColor = UIColor(white: 1.0, alpha: 0.3).cgColor
+        linesLayer.strokeColor = fontColor.withAlphaComponent(0.3).cgColor
         linesLayer.lineWidth = 1.0
         
+        labels()
         dots()
     }
     
-    func dots() {
+    private func labels() {
+        let labelWidth: CGFloat = 20
+        let labelHeight: CGFloat = 12
+        let labelSize: CGFloat = 10
+        
+        //top line label
+        var label = UILabel(frame: CGRect(x: graphLayer.margin - labelWidth,
+                                          y: graphLayer.topBorder - labelHeight/2,
+                                          width: labelWidth,
+                                          height: labelHeight))
+        label.text = String(describing: graphPoints.max()!)
+        label.font = label.font.withSize(labelSize)
+        label.textColor = fontColor
+        label.textAlignment = .center
+        addSubview(label)
+        
+        //center line label
+        label = UILabel(frame: CGRect(x: graphLayer.margin - labelWidth,
+                                      y: graphLayer.graphHeight/2 + graphLayer.topBorder - labelHeight/2,
+                                      width: labelWidth,
+                                      height: labelHeight))
+        label.text = String(describing: graphPoints.max()!/2)
+        label.font = label.font.withSize(labelSize)
+        label.textColor = fontColor
+        label.textAlignment = .center
+        addSubview(label)
+        
+        //bottom line label
+        label = UILabel(frame: CGRect(x: graphLayer.margin - labelWidth,
+                                      y: graphLayer.height - graphLayer.bottomBorder - labelHeight/2,
+                                      width: labelWidth,
+                                      height: labelHeight))
+        label.text = String(describing: graphPoints.min()!)
+        label.font = label.font.withSize(labelSize)
+        label.textColor = fontColor
+        label.textAlignment = .center
+        addSubview(label)
+        
+        //bottom labels
+        let pointY = graphLayer.height - graphLayer.bottomBorder/2
+        for i in 0..<graphLayer.graphPoints.count {
+            let pointX = graphLayer.columnXPoint(column: i)
+
+            label = UILabel(frame: CGRect(x: pointX - labelWidth/2,
+                                          y: pointY - labelHeight/2,
+                                          width: labelWidth,
+                                          height: labelHeight))
+            label.text = String(describing: graphNames[i])
+            label.font = label.font.withSize(labelSize)
+            label.textColor = fontColor
+            label.textAlignment = .center
+            addSubview(label)
+        }
+    }
+    
+    private func dots() {
         for i in 0..<graphLayer.graphPoints.count {
             var point = CGPoint(x: graphLayer.columnXPoint(column: i),
                                 y: graphLayer.columnYPoint(graphPoint: graphLayer.graphPoints[i]))
@@ -99,7 +195,7 @@ import UIKit
                                                      size: CGSize(width: 5.0, height: 5.0)))
             let circleLayer = dotsLayer[i]
             circleLayer.path = circle.cgPath
-            circleLayer.fillColor = UIColor.white.cgColor
+            circleLayer.fillColor = fontColor.cgColor
         }
     }
 

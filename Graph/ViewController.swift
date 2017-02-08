@@ -20,6 +20,7 @@ class ViewController: UIViewController {
         graphView.layer.cornerRadius = 8.0
         
         graphView.graphPoints = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        graphView.graphNames = ["One", "Two", "Thr", "Fou", "Fiv", "Six", "Sev", "Eig", "Nin"]
     }
 
     @IBAction func changeTap(_ sender: Any) {
