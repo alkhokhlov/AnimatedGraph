@@ -23,11 +23,12 @@ func configure(withPoints points: [Double], columnNames: [String], title: String
 6. To animate use method
 
 ```swift
-/// Use this method to animate graph with other points. IMPORTANT!!! Count of
-/// old and current points must be same
-///
-/// - Parameter points: Array of points
-func animate(withPoints points: [Double])
+/// Use this method to animate graph with other points and column names. IMPORTANT!!! Count of
+/// old and current points and column names must be same
+/// - Parameters:
+///   - points: Array of points
+///   - columnNames: Array of column names
+func animate(withPoints points: [Double], columnNames: [String])
 ```
 
 If you have problems, just look at the example of usage in _ViewController.swift_
