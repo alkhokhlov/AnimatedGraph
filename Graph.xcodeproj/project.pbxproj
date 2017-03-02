@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A82C5B231E68B93200ACA464 /* Array+Shuffle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82C5B221E68B93200ACA464 /* Array+Shuffle.swift */; };
 		A88EE01C1E4B7C11000FE5A6 /* GraphLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88EE01A1E4B7C11000FE5A6 /* GraphLayer.swift */; };
 		A88EE01D1E4B7C11000FE5A6 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88EE01B1E4B7C11000FE5A6 /* GraphView.swift */; };
 		A8CC24841E363656007E1E03 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CC24831E363656007E1E03 /* AppDelegate.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A82C5B221E68B93200ACA464 /* Array+Shuffle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Shuffle.swift"; sourceTree = "<group>"; };
 		A88EE01A1E4B7C11000FE5A6 /* GraphLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphLayer.swift; sourceTree = "<group>"; };
 		A88EE01B1E4B7C11000FE5A6 /* GraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 		A8CC24801E363656007E1E03 /* Graph.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Graph.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -39,6 +41,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A82C5B211E68B91000ACA464 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				A82C5B221E68B93200ACA464 /* Array+Shuffle.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		A88EE0191E4B7BFC000FE5A6 /* Graph */ = {
 			isa = PBXGroup;
 			children = (
@@ -67,6 +77,7 @@
 		A8CC24821E363656007E1E03 /* Graph */ = {
 			isa = PBXGroup;
 			children = (
+				A82C5B211E68B91000ACA464 /* Extension */,
 				A88EE0191E4B7BFC000FE5A6 /* Graph */,
 				A8CC24831E363656007E1E03 /* AppDelegate.swift */,
 				A8CC24851E363656007E1E03 /* ViewController.swift */,
@@ -155,6 +166,7 @@
 				A8CC24861E363656007E1E03 /* ViewController.swift in Sources */,
 				A8CC24841E363656007E1E03 /* AppDelegate.swift in Sources */,
 				A88EE01C1E4B7C11000FE5A6 /* GraphLayer.swift in Sources */,
+				A82C5B231E68B93200ACA464 /* Array+Shuffle.swift in Sources */,
 				A88EE01D1E4B7C11000FE5A6 /* GraphView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -279,6 +291,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 27EMTZ4TK6;
 				INFOPLIST_FILE = Graph/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = kh.Graph;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -294,6 +307,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 27EMTZ4TK6;
 				INFOPLIST_FILE = Graph/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = kh.Graph;
 				PRODUCT_NAME = "$(TARGET_NAME)";

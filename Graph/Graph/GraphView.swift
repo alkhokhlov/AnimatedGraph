@@ -18,13 +18,13 @@ protocol GraphViewUsageProtocol {
     ///   - columnNames: Bottom located column names.
     ///   - title: Title of graph
     func configure(withPoints points: [Double], columnNames: [String], title: String?)
-    
-    
-    /// Use this method to animate graph with other points. IMPORTANT!!! Count of
-    /// old and current points must be same
-    ///
-    /// - Parameter points: Array of points
-    func animate(withPoints points: [Double])
+
+    /// Use this method to animate graph with other points and column names. IMPORTANT!!! Count of
+    /// old and current points and column names must be same
+    /// - Parameters:
+    ///   - points: Array of points
+    ///   - columnNames: Array of column names
+    func animate(withPoints points: [Double], columnNames: [String])
 }
 
 @IBDesignable class GraphView: UIView, GraphViewUsageProtocol {
@@ -45,6 +45,7 @@ protocol GraphViewUsageProtocol {
     private var linesLayer = CAShapeLayer()
     private var dotsLayer = [CAShapeLayer]()
     private var start = true
+    private var bottomLabels = [UILabel]()
     
     required override init(frame: CGRect) {
         super.init(frame: frame)
@@ -95,6 +96,8 @@ protocol GraphViewUsageProtocol {
         
         titleLabel()
         lines()
+        labels()
+        dots()
     }
     
     private func removeLabels() {
@@ -149,9 +152,6 @@ protocol GraphViewUsageProtocol {
         linesLayer.path = linePath.cgPath
         linesLayer.strokeColor = fontColor.withAlphaComponent(0.3).cgColor
         linesLayer.lineWidth = 1.0
-        
-        labels()
-        dots()
     }
     
     private func labels() {
@@ -193,6 +193,8 @@ protocol GraphViewUsageProtocol {
         addSubview(label)
         
         //bottom labels
+        bottomLabels = [UILabel]()
+        
         let pointY = graphLayer.height - graphLayer.bottomBorder/2
         for i in 0..<graphLayer.graphPoints.count {
             let pointX = graphLayer.columnXPoint(column: i)
@@ -206,6 +208,8 @@ protocol GraphViewUsageProtocol {
             label.textColor = fontColor
             label.textAlignment = .center
             addSubview(label)
+            
+            bottomLabels.append(label)
         }
     }
     
@@ -243,7 +247,14 @@ protocol GraphViewUsageProtocol {
                                     options: CGGradientDrawingOptions(rawValue: 0))
     }
     
-    func animate(withPoints points: [Double]) {
+    func animate(withPoints points: [Double], columnNames: [String]) {
+        graphColumnNames = columnNames
+        var i = 0
+        for label in bottomLabels {
+            label.text = columnNames[i]
+            i += 1
+        }
+        
         let previousHighestY = graphLayer.highestYPoint
         let previousLine = graphLayer.graphPath.cgPath
         
@@ -277,7 +288,7 @@ protocol GraphViewUsageProtocol {
         animation.isRemovedOnCompletion = false
         graphLineLayer.add(animation, forKey: "path")
         
-        var i = 0
+        i = 0
         for dot in dotsLayer {
             var point = CGPoint(x: graphLayer.columnXPoint(column: i),
                                 y: graphLayer.columnYPoint(graphPoint: graphLayer.graphPoints[i]))

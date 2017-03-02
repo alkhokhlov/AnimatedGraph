@@ -11,6 +11,7 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet var graphView: GraphView!
+    var columnNames = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +20,7 @@ class ViewController: UIViewController {
         graphView.layer.cornerRadius = 8.0
         
         let points: [Double] = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        let columnNames = ["One", "Two", "Thr", "Fou", "Fiv", "Six", "Sev", "Eig", "Nin"]
+        columnNames = ["One", "Two", "Thr", "Fou", "Fiv", "Six", "Sev", "Eig", "Nin"]
 
         graphView.configure(withPoints: points, columnNames: columnNames, title: "Awesome graph")
     }
@@ -31,7 +32,9 @@ class ViewController: UIViewController {
             points.append(point)
         }
         
-        graphView.animate(withPoints: points)
+        
+        
+        graphView.animate(withPoints: points, columnNames: columnNames.shuffled())
     }
 
 }
