@@ -10,21 +10,13 @@ import UIKit
 
 class GraphLayer: CAShapeLayer {
     
-    var graphPoints: [Double]!
+    var graphPoints: [Double] = []
     var graphPath: UIBezierPath!
-    var margin: CGFloat = 20.0
-    var topBorder:CGFloat = 60.0
-    var bottomBorder:CGFloat = 50.0
     var graphHeight: CGFloat!
     var highestYPoint: CGFloat!
-    var width: CGFloat!
-    var height: CGFloat!
-    private var parentsBounds: CGRect!
-
-    func fillProperties(parentsBounds: CGRect, points: [Double]) {
-        self.parentsBounds = parentsBounds
-        self.width = parentsBounds.size.width
-        self.height = parentsBounds.size.height
+    var padding: UIEdgeInsets = UIEdgeInsets(top: 60.0, left: 0.0, bottom: 40.0, right: 40.0)
+    
+    func fillProperties(points: [Double]) {
         self.graphPoints = points
         
         path = rectangle(withPoints: graphPoints).cgPath
@@ -34,7 +26,7 @@ class GraphLayer: CAShapeLayer {
     func rectangle(withPoints points: [Double]) -> UIBezierPath {
         graphPoints = points
         
-        graphHeight = height - topBorder - bottomBorder
+        graphHeight = bounds.height - padding.top - padding.bottom
         
         graphPath = UIBezierPath()
         
@@ -53,10 +45,10 @@ class GraphLayer: CAShapeLayer {
         
         clippingPath.addLine(to: CGPoint(
             x: columnXPoint(column: points.count - 1),
-            y:height))
+            y: bounds.height))
         clippingPath.addLine(to: CGPoint(
             x:columnXPoint(column: 0),
-            y:height))
+            y: bounds.height))
         clippingPath.close()
         
         return clippingPath
@@ -64,15 +56,15 @@ class GraphLayer: CAShapeLayer {
     
     func columnYPoint(graphPoint: Double) -> CGFloat {
         let maxValue = graphPoints.max()
-        var y:CGFloat = CGFloat(graphPoint) / CGFloat(maxValue!) * self.graphHeight
-        y = self.graphHeight + self.topBorder - y
+        var y: CGFloat = CGFloat(graphPoint) / CGFloat(maxValue!) * self.graphHeight
+        y = self.graphHeight + padding.top - y
         return y
     }
     
     func columnXPoint(column: Int) -> CGFloat {
-        let spacer = (self.width - self.margin*2 - 4) / CGFloat((graphPoints.count - 1))
-        var x:CGFloat = CGFloat(column) * spacer
-        x += self.margin + 2
+        let spacer = (bounds.width - (padding.left + padding.right)) / CGFloat((graphPoints.count - 1))
+        var x: CGFloat = CGFloat(column) * spacer
+        x += padding.left
         return x
     }
     

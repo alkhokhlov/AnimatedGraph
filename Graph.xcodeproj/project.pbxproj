@@ -77,9 +77,9 @@
 		A8CC24821E363656007E1E03 /* Graph */ = {
 			isa = PBXGroup;
 			children = (
+				A8CC24831E363656007E1E03 /* AppDelegate.swift */,
 				A82C5B211E68B91000ACA464 /* Extension */,
 				A88EE0191E4B7BFC000FE5A6 /* Graph */,
-				A8CC24831E363656007E1E03 /* AppDelegate.swift */,
 				A8CC24851E363656007E1E03 /* ViewController.swift */,
 				A8CC24871E363656007E1E03 /* Main.storyboard */,
 				A8CC248A1E363656007E1E03 /* Assets.xcassets */,
