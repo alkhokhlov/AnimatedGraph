@@ -25,29 +25,43 @@ class ViewController: UIViewController {
         graphView.endColor = UIColor(red: 32.0/255.0, green: 40.0/255.0, blue: 66.0/255.0, alpha: 1.0)
         graphView.startGraphColor = UIColor(red: 53.0/255.0, green: 63.0/255.0, blue: 96.0/255.0, alpha: 1.0)
         graphView.endGraphColor = graphView.endColor
-        graphView.fontColor = UIColor.white
+        graphView.fontColor = UIColor(red: 72.0/255.0, green: 85.0/255.0, blue: 137.0/255.0, alpha: 1.0)
         graphView.lineWidth = 1.0
         graphView.isEnabledDots = false
-        graphView.isEnabledLines = false
+        graphView.isEnabledLines = true
         graphView.labelsAlignment = .right
-        graphView.labelsTextColor = UIColor.white
+        graphView.labelsTextColor = UIColor(red: 46.0/255.0, green: 195.0/255.0, blue: 151.0/255.0, alpha: 1.0)
         graphView.linesWidth = 0.5
+        graphView.maxHorizontalLines = 5
+        graphView.maxVerticalLines = 12
+        graphView.numberFormatter = { value in
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = .currency
+            if value < 1.0 {
+                numberFormatter.minimumFractionDigits = 1
+                numberFormatter.maximumFractionDigits = 6
+            } else {
+                numberFormatter.minimumFractionDigits = 0
+                numberFormatter.maximumFractionDigits = 2
+            }
+            return numberFormatter
+        }
         
         var points: [Double] = []
-        for i in 1...10 {
+        for i in 0...10 {
             points.append(Double(i))
         }
 
-        graphView.configure(withPoints: points, columnNames: nil, title: "Awesome graph")
+        graphView.configure(withPoints: points, columnNames: nil, title: "")
     }
 
     @IBAction func changeTap(_ sender: Any) {
         var points = [Double]()
-        for _ in 1...10 {
+        for _ in 0...10 {
             let point = Double(arc4random()).truncatingRemainder(dividingBy: 10)
             points.append(point)
         }
-
+        
         graphView.animate(withPoints: points, columnNames: nil)
     }
 

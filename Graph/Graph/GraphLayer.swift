@@ -13,11 +13,12 @@ class GraphLayer: CAShapeLayer {
     var graphPoints: [Double] = []
     var graphPath: UIBezierPath!
     var graphHeight: CGFloat!
+    var graphWidth: CGFloat!
     var highestYPoint: CGFloat!
-    var padding: UIEdgeInsets = UIEdgeInsets(top: 60.0, left: 0.0, bottom: 40.0, right: 40.0)
+    var padding: UIEdgeInsets = UIEdgeInsets(top: 24.0, left: 16.0, bottom: 40.0, right: 64.0)
     
     func fillProperties(points: [Double]) {
-        self.graphPoints = points
+        graphPoints = points
         
         path = rectangle(withPoints: graphPoints).cgPath
         fillColor = UIColor.white.cgColor
@@ -27,6 +28,7 @@ class GraphLayer: CAShapeLayer {
         graphPoints = points
         
         graphHeight = bounds.height - padding.top - padding.bottom
+        graphWidth = bounds.width - padding.right - padding.left
         
         graphPath = UIBezierPath()
         
@@ -47,7 +49,7 @@ class GraphLayer: CAShapeLayer {
             x: columnXPoint(column: points.count - 1),
             y: bounds.height))
         clippingPath.addLine(to: CGPoint(
-            x:columnXPoint(column: 0),
+            x: columnXPoint(column: 0),
             y: bounds.height))
         clippingPath.close()
         
@@ -55,15 +57,14 @@ class GraphLayer: CAShapeLayer {
     }
     
     func columnYPoint(graphPoint: Double) -> CGFloat {
-        let maxValue = graphPoints.max()
-        var y: CGFloat = CGFloat(graphPoint) / CGFloat(maxValue!) * self.graphHeight
-        y = self.graphHeight + padding.top - y
+        var y = CGFloat((graphPoint - graphPoints.min()!) / (graphPoints.max()! - graphPoints.min()!))
+        y = graphHeight + padding.top - y * graphHeight
         return y
     }
     
     func columnXPoint(column: Int) -> CGFloat {
         let spacer = (bounds.width - (padding.left + padding.right)) / CGFloat((graphPoints.count - 1))
-        var x: CGFloat = CGFloat(column) * spacer
+        var x = CGFloat(column) * spacer
         x += padding.left
         return x
     }

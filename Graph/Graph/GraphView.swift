@@ -44,6 +44,9 @@ class GraphView: UIView, GraphViewUsageProtocol {
     var labelsTextColor: UIColor = UIColor.white
     var linesColor: UIColor = UIColor.white
     var linesWidth: CGFloat = 1.0
+    var numberFormatter: ((Double) -> NumberFormatter)!
+    var maxHorizontalLines = 3
+    var maxVerticalLines = 8
     var graphPadding: UIEdgeInsets {
         get {
             return graphLayer.padding
@@ -60,7 +63,8 @@ class GraphView: UIView, GraphViewUsageProtocol {
     private var graphLayer = GraphLayer()
     private var gradient = CAGradientLayer()
     private var graphLineLayer = CAShapeLayer()
-    private var linesLayer = CAShapeLayer()
+    private var horizontalLinesLayer = CAShapeLayer()
+    private var verticalLinesLayer = CAShapeLayer()
     private var dotsLayer = [CAShapeLayer]()
     private var bottomLabels = [UILabel]()
     
@@ -69,6 +73,9 @@ class GraphView: UIView, GraphViewUsageProtocol {
     required override init(frame: CGRect) {
         super.init(frame: frame)
         
+        layer.addSublayer(horizontalLinesLayer)
+        layer.addSublayer(verticalLinesLayer)
+        
         graphLayer.frame.size = frame.size
         layer.addSublayer(graphLayer)
         
@@ -76,7 +83,7 @@ class GraphView: UIView, GraphViewUsageProtocol {
         layer.addSublayer(gradient)
         
         layer.addSublayer(graphLineLayer)
-        layer.addSublayer(linesLayer)
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -99,13 +106,14 @@ class GraphView: UIView, GraphViewUsageProtocol {
         titleLabel()
         
         if isEnabledLines {
-            lines()
+            drawHorizontalLines()
+            drawVerticalLines()
         }
         
-        labels()
+        addLabels()
         
         if isEnabledDots {
-            dots()
+            drawDots()
         }
     }
     
@@ -156,29 +164,35 @@ class GraphView: UIView, GraphViewUsageProtocol {
         animation.isRemovedOnCompletion = false
         graphLineLayer.add(animation, forKey: "path")
         
-        var i = 0
-        for dot in dotsLayer {
-            var point = CGPoint(x: graphLayer.columnXPoint(column: i),
-                                y: graphLayer.columnYPoint(graphPoint: graphLayer.graphPoints[i]))
-            point.x -= 5.0/2
-            point.y -= 5.0/2
-            
-            let circle = UIBezierPath(ovalIn: CGRect(origin: point,
-                                                     size: CGSize(width: 5.0, height: 5.0)))
-            
-            animation = CABasicAnimation(keyPath: "path")
-            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            animation.fromValue = dot.path
-            animation.toValue = circle.cgPath
-            animation.duration = 0.4
-            animation.fillMode = kCAFillModeForwards
-            animation.isRemovedOnCompletion = false
-            dot.add(animation, forKey: "path")
-            
-            i += 1
-            
-            dot.path = circle.cgPath
+        if isEnabledDots {
+            var i = 0
+            for dot in dotsLayer {
+                var point = CGPoint(x: graphLayer.columnXPoint(column: i),
+                                    y: graphLayer.columnYPoint(graphPoint: graphLayer.graphPoints[i]))
+                point.x -= 5.0/2
+                point.y -= 5.0/2
+                
+                let circle = UIBezierPath(ovalIn: CGRect(origin: point,
+                                                         size: CGSize(width: 5.0, height: 5.0)))
+                
+                animation = CABasicAnimation(keyPath: "path")
+                animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                animation.fromValue = dot.path
+                animation.toValue = circle.cgPath
+                animation.duration = 0.4
+                animation.fillMode = kCAFillModeForwards
+                animation.isRemovedOnCompletion = false
+                dot.add(animation, forKey: "path")
+                
+                i += 1
+                
+                dot.path = circle.cgPath
+            }
         }
+        
+        graphPoints = points
+        removeLabels()
+        addLabels()
     }
     
     func configure(withPoints points: [Double], columnNames: [String]?, title: String?) {
@@ -232,72 +246,61 @@ class GraphView: UIView, GraphViewUsageProtocol {
         addSubview(label)
     }
     
-    private func lines() {
+    private func drawHorizontalLines() {
         let linePath = UIBezierPath()
         
-        //top line
-        linePath.move(to: CGPoint(x: graphLayer.padding.left,
-                                  y: graphLayer.padding.top))
-        linePath.addLine(to: CGPoint(x: graphLayer.bounds.width - graphLayer.padding.right,
-                                     y: graphLayer.padding.top))
-        
-        
-        
-        //center line
-        linePath.move(to: CGPoint(x: graphLayer.padding.left,
-                                  y: graphLayer.graphHeight/2 + graphLayer.padding.top))
-        linePath.addLine(to: CGPoint(x: graphLayer.bounds.width - graphLayer.padding.right,
-                                     y: graphLayer.graphHeight/2 + graphLayer.padding.top))
-        
-        
-        
-        //bottom line
-        linePath.move(to: CGPoint(x: graphLayer.padding.left,
-                                  y: graphLayer.bounds.height - graphLayer.padding.bottom))
-        linePath.addLine(to: CGPoint(x: graphLayer.bounds.width - graphLayer.padding.right,
-                                     y: graphLayer.bounds.height - graphLayer.padding.bottom))
-        
-        linesLayer.path = linePath.cgPath
-        linesLayer.strokeColor = linesColor.withAlphaComponent(0.3).cgColor
-        linesLayer.lineWidth = linesWidth
+        for i in 0...(maxHorizontalLines - 1) {
+            linePath.move(to: CGPoint(x: graphLayer.padding.left,
+                                      y: graphLayer.graphHeight/CGFloat((maxHorizontalLines - 1))*CGFloat(i) + graphLayer.padding.top))
+            linePath.addLine(to: CGPoint(x: graphLayer.bounds.width - graphLayer.padding.right,
+                                         y: graphLayer.graphHeight/CGFloat((maxHorizontalLines - 1))*CGFloat(i) + graphLayer.padding.top))
+        }
+        horizontalLinesLayer.path = linePath.cgPath
+        horizontalLinesLayer.lineDashPattern = [NSNumber(value: 2), NSNumber(value: 4)]
+        horizontalLinesLayer.lineJoin = kCALineCapButt
+        horizontalLinesLayer.strokeColor = linesColor.withAlphaComponent(0.3).cgColor
+        horizontalLinesLayer.lineWidth = linesWidth
     }
     
-    private func labels() {
+    private func drawVerticalLines() {
+        let linePath = UIBezierPath()
+        
+        for i in 0...(maxVerticalLines - 1) {
+            linePath.move(to: CGPoint(x: graphLayer.graphWidth/CGFloat((maxVerticalLines - 1))*CGFloat(i) + graphLayer.padding.left,
+                                      y: graphPadding.top))
+            linePath.addLine(to: CGPoint(x: graphLayer.graphWidth/CGFloat((maxVerticalLines - 1))*CGFloat(i) + graphLayer.padding.left,
+                                         y: graphPadding.top + graphLayer.graphHeight))
+        }
+        verticalLinesLayer.path = linePath.cgPath
+        verticalLinesLayer.lineDashPattern = [NSNumber(value: 2), NSNumber(value: 4)]
+        verticalLinesLayer.lineJoin = kCALineCapButt
+        verticalLinesLayer.strokeColor = linesColor.withAlphaComponent(0.3).cgColor
+        verticalLinesLayer.lineWidth = linesWidth
+    }
+    
+    private func formatValue(_ value: Double) -> String {
+        let decimal = Decimal(value)
+        return numberFormatter(value).string(from: NSDecimalNumber(decimal: decimal))!
+    }
+    
+    private func addLabels() {
         let labelHeight: CGFloat = 12.0
         let labelSize: CGFloat = 11.0
         
-        //top line label
-        var label = UILabel(frame: CGRect(x: labelsAlignment == .left ? 0 : bounds.width - graphLayer.padding.right,
-                                          y: graphLayer.padding.top - labelHeight/2,
+        // side labels
+        for i in 0...(maxHorizontalLines - 1) {
+            let label = UILabel(frame: CGRect(x: labelsAlignment == .left ? 0 : bounds.width - graphLayer.padding.right,
+                                          y: graphLayer.graphHeight/CGFloat((maxHorizontalLines - 1))*CGFloat(maxHorizontalLines - 1 - i) + graphLayer.padding.top - labelHeight/2,
                                           width: labelsAlignment == .left ? graphLayer.padding.left : graphLayer.padding.right,
                                           height: labelHeight))
-        label.text = String(describing: graphPoints.max()!)
-        label.font = label.font.withSize(labelSize)
-        label.textColor = labelsTextColor
-        label.textAlignment = .center
-        addSubview(label)
-        
-        //center line label
-        label = UILabel(frame: CGRect(x: labelsAlignment == .left ? 0 : bounds.width - graphLayer.padding.right,
-                                      y: graphLayer.graphHeight/2 + graphLayer.padding.top - labelHeight/2,
-                                      width: labelsAlignment == .left ? graphLayer.padding.left : graphLayer.padding.right,
-                                      height: labelHeight))
-        label.text = String(describing: graphPoints.max()!/2)
-        label.font = label.font.withSize(labelSize)
-        label.textColor = labelsTextColor
-        label.textAlignment = .center
-        addSubview(label)
-        
-        //bottom line label
-        label = UILabel(frame: CGRect(x: labelsAlignment == .left ? 0 : bounds.width - graphLayer.padding.right,
-                                      y: graphLayer.bounds.height - graphLayer.padding.bottom - labelHeight/2,
-                                      width: labelsAlignment == .left ? graphLayer.padding.left : graphLayer.padding.right,
-                                      height: labelHeight))
-        label.text = String(describing: graphPoints.min()!)
-        label.font = label.font.withSize(labelSize)
-        label.textColor = labelsTextColor
-        label.textAlignment = .center
-        addSubview(label)
+
+            let value = (1.0 / Double(maxHorizontalLines - 1) * Double(i) ) * (graphPoints.max()! - graphPoints.min()!) + graphPoints.min()!
+            label.text = "\(formatValue(value))"
+            label.font = label.font.withSize(labelSize)
+            label.textColor = labelsTextColor
+            label.textAlignment = .center
+            addSubview(label)
+        }
         
         //bottom labels
         if let graphColumnNames = graphColumnNames {
@@ -307,7 +310,7 @@ class GraphView: UIView, GraphViewUsageProtocol {
             for i in 0..<graphLayer.graphPoints.count {
                 let pointX = graphLayer.columnXPoint(column: i)
                 
-                label = UILabel(frame: CGRect(x: pointX - graphLayer.padding.left/2,
+                let label = UILabel(frame: CGRect(x: pointX - graphLayer.padding.left/2,
                                               y: pointY - labelHeight/2,
                                               width: labelsAlignment == .left ? graphLayer.padding.left : graphLayer.padding.right,
                                               height: labelHeight))
@@ -322,7 +325,7 @@ class GraphView: UIView, GraphViewUsageProtocol {
         }
     }
     
-    private func dots() {
+    private func drawDots() {
         for i in 0..<graphLayer.graphPoints.count {
             var point = CGPoint(x: graphLayer.columnXPoint(column: i),
                                 y: graphLayer.columnYPoint(graphPoint: graphLayer.graphPoints[i]))
