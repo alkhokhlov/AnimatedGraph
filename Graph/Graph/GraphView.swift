@@ -37,6 +37,7 @@ class GraphView: UIView, GraphViewUsageProtocol {
     var startGraphColor: UIColor = UIColor.red
     var endGraphColor: UIColor = UIColor.green
     var fontColor: UIColor = UIColor.white
+    var graphLineColor: UIColor = UIColor.white
     var lineWidth: CGFloat = 2.0
     var isEnabledDots = true
     var isEnabledLines = true
@@ -61,10 +62,9 @@ class GraphView: UIView, GraphViewUsageProtocol {
     var title = ""
     
     private var graphLayer = GraphLayer()
-    private var gradient = CAGradientLayer()
+    private var graphGradientLayer = CAGradientLayer()
     private var graphLineLayer = CAShapeLayer()
-    private var horizontalLinesLayer = CAShapeLayer()
-    private var verticalLinesLayer = CAShapeLayer()
+    private var linesLayer = CAShapeLayer()
     private var dotsLayer = [CAShapeLayer]()
     private var bottomLabels = [UILabel]()
     
@@ -73,17 +73,12 @@ class GraphView: UIView, GraphViewUsageProtocol {
     required override init(frame: CGRect) {
         super.init(frame: frame)
         
-        layer.addSublayer(horizontalLinesLayer)
-        layer.addSublayer(verticalLinesLayer)
-        
-        graphLayer.frame.size = frame.size
         layer.addSublayer(graphLayer)
+        layer.addSublayer(linesLayer)
         
-        gradient.mask = graphLayer
-        layer.addSublayer(gradient)
-        
+        graphGradientLayer.mask = graphLayer
+        layer.addSublayer(graphGradientLayer)
         layer.addSublayer(graphLineLayer)
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -93,21 +88,22 @@ class GraphView: UIView, GraphViewUsageProtocol {
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        graphLayer.frame.size = frame.size
+        
         removeLabels()
         
         graphLayer.fillProperties(points: graphPoints)
         
-        gradient.frame = bounds
-        gradient.startPoint = CGPoint(x: 0.5, y: graphLayer.highestYPoint / bounds.size.height)
-        gradient.endPoint = CGPoint(x: 0.5, y: 1)
+        graphGradientLayer.frame = bounds
+        graphGradientLayer.startPoint = CGPoint(x: 0.5, y: graphLayer.highestYPoint / bounds.size.height)
+        graphGradientLayer.endPoint = CGPoint(x: 0.5, y: 1)
         
         graphLineLayer.path = graphLayer.graphPath.cgPath
         
         titleLabel()
         
         if isEnabledLines {
-            drawHorizontalLines()
-            drawVerticalLines()
+            drawLines()
         }
         
         addLabels()
@@ -153,7 +149,7 @@ class GraphView: UIView, GraphViewUsageProtocol {
         animation.duration = 0.4
         animation.fillMode = kCAFillModeForwards
         animation.isRemovedOnCompletion = false
-        gradient.add(animation, forKey: "startPoint")
+        graphGradientLayer.add(animation, forKey: "startPoint")
         
         animation = CABasicAnimation(keyPath: "path")
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
@@ -202,8 +198,8 @@ class GraphView: UIView, GraphViewUsageProtocol {
         }
         
         graphPoints = points
-        gradient.colors = [startGraphColor.cgColor, endGraphColor.cgColor]
-        graphLineLayer.strokeColor = fontColor.cgColor
+        graphGradientLayer.colors = [startGraphColor.cgColor, endGraphColor.cgColor]
+        graphLineLayer.strokeColor = graphLineColor.cgColor
         graphLineLayer.fillColor = UIColor.clear.cgColor
         graphLineLayer.lineWidth = lineWidth
         
@@ -246,36 +242,43 @@ class GraphView: UIView, GraphViewUsageProtocol {
         addSubview(label)
     }
     
-    private func drawHorizontalLines() {
+    private func drawLines() {
         let linePath = UIBezierPath()
         
         for i in 0...(maxHorizontalLines - 1) {
-            linePath.move(to: CGPoint(x: graphLayer.padding.left,
-                                      y: graphLayer.graphHeight/CGFloat((maxHorizontalLines - 1))*CGFloat(i) + graphLayer.padding.top))
-            linePath.addLine(to: CGPoint(x: graphLayer.bounds.width - graphLayer.padding.right,
-                                         y: graphLayer.graphHeight/CGFloat((maxHorizontalLines - 1))*CGFloat(i) + graphLayer.padding.top))
+            let y: CGFloat = graphLayer.graphHeight/CGFloat((maxHorizontalLines - 1))*CGFloat(i) + graphLayer.padding.top
+            let moveX: CGFloat = graphLayer.padding.left
+            let addLineX: CGFloat = graphLayer.bounds.width - graphLayer.padding.right
+            
+            linePath.move(to: CGPoint(x: moveX + linesWidth,
+                                      y: y))
+            linePath.addLine(to: CGPoint(x: addLineX - linesWidth,
+                                         y: y))
         }
-        horizontalLinesLayer.path = linePath.cgPath
-        horizontalLinesLayer.lineDashPattern = [NSNumber(value: 2), NSNumber(value: 4)]
-        horizontalLinesLayer.lineJoin = kCALineCapButt
-        horizontalLinesLayer.strokeColor = linesColor.withAlphaComponent(0.3).cgColor
-        horizontalLinesLayer.lineWidth = linesWidth
-    }
-    
-    private func drawVerticalLines() {
-        let linePath = UIBezierPath()
         
         for i in 0...(maxVerticalLines - 1) {
-            linePath.move(to: CGPoint(x: graphLayer.graphWidth/CGFloat((maxVerticalLines - 1))*CGFloat(i) + graphLayer.padding.left,
-                                      y: graphPadding.top))
-            linePath.addLine(to: CGPoint(x: graphLayer.graphWidth/CGFloat((maxVerticalLines - 1))*CGFloat(i) + graphLayer.padding.left,
-                                         y: graphPadding.top + graphLayer.graphHeight))
+            let x: CGFloat = graphLayer.graphWidth/CGFloat((maxVerticalLines - 1))*CGFloat(i) + graphLayer.padding.left
+            let moveY: CGFloat = graphPadding.top
+            let addLineY: CGFloat = graphPadding.top + graphLayer.graphHeight
+            
+            if i == maxVerticalLines - 1 {
+                linePath.move(to: CGPoint(x: x - linesWidth,
+                                          y: moveY))
+                linePath.addLine(to: CGPoint(x: x - linesWidth,
+                                             y: addLineY))
+            } else {
+                linePath.move(to: CGPoint(x: x + linesWidth,
+                                          y: moveY))
+                linePath.addLine(to: CGPoint(x: x + linesWidth,
+                                             y: addLineY))
+            }
         }
-        verticalLinesLayer.path = linePath.cgPath
-        verticalLinesLayer.lineDashPattern = [NSNumber(value: 2), NSNumber(value: 4)]
-        verticalLinesLayer.lineJoin = kCALineCapButt
-        verticalLinesLayer.strokeColor = linesColor.withAlphaComponent(0.3).cgColor
-        verticalLinesLayer.lineWidth = linesWidth
+        
+        linesLayer.path = linePath.cgPath
+        linesLayer.lineDashPattern = [NSNumber(value: 2), NSNumber(value: 4)]
+        linesLayer.lineJoin = kCALineCapButt
+        linesLayer.strokeColor = linesColor.withAlphaComponent(0.3).cgColor
+        linesLayer.lineWidth = linesWidth
     }
     
     private func formatValue(_ value: Double) -> String {
@@ -342,11 +345,11 @@ class GraphView: UIView, GraphViewUsageProtocol {
 
     override func draw(_ rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()
-        let colors = [startColor.cgColor, endColor.cgColor]  as CFArray
+        let colors = [startColor.cgColor, endColor.cgColor] as CFArray
         
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         
-        let colorLocation:[CGFloat] = [0.0, 1.0]
+        let colorLocation: [CGFloat] = [0.0, 1.0]
         
         let gradient = CGGradient(colorsSpace: colorSpace, colors: colors, locations: colorLocation)
         

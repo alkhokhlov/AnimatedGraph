@@ -21,19 +21,21 @@ class ViewController: UIViewController {
         graphView.clipsToBounds = true
         graphView.layer.cornerRadius = 8.0
         
-        graphView.startColor = UIColor(red: 32.0/255.0, green: 40.0/255.0, blue: 66.0/255.0, alpha: 1.0)
-        graphView.endColor = UIColor(red: 32.0/255.0, green: 40.0/255.0, blue: 66.0/255.0, alpha: 1.0)
-        graphView.startGraphColor = UIColor(red: 53.0/255.0, green: 63.0/255.0, blue: 96.0/255.0, alpha: 1.0)
-        graphView.endGraphColor = graphView.endColor
+        graphView.backgroundColor = UIColor(red: 32.0/255.0, green: 40.0/255.0, blue: 66.0/255.0, alpha: 1.0)
+        graphView.startColor = UIColor.clear
+        graphView.endColor = UIColor.clear
+        graphView.startGraphColor = UIColor(red: 51.0/255.0, green: 61.0/255.0, blue: 93.0/255.0, alpha: 1.0)
+        graphView.endGraphColor = graphView.backgroundColor!
         graphView.fontColor = UIColor(red: 72.0/255.0, green: 85.0/255.0, blue: 137.0/255.0, alpha: 1.0)
+        graphView.graphLineColor = UIColor(red: 94.0/255.0, green: 111.0/255.0, blue: 160.0/255.0, alpha: 1.0)
         graphView.lineWidth = 1.0
         graphView.isEnabledDots = false
         graphView.isEnabledLines = true
         graphView.labelsAlignment = .right
         graphView.labelsTextColor = UIColor(red: 46.0/255.0, green: 195.0/255.0, blue: 151.0/255.0, alpha: 1.0)
         graphView.linesWidth = 0.5
-        graphView.maxHorizontalLines = 5
-        graphView.maxVerticalLines = 12
+        graphView.maxHorizontalLines = 4
+        graphView.maxVerticalLines = 10
         graphView.numberFormatter = { value in
             let numberFormatter = NumberFormatter()
             numberFormatter.numberStyle = .currency
