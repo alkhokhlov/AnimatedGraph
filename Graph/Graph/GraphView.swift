@@ -301,7 +301,7 @@ class GraphView: UIView, GraphViewUsageProtocol {
             label.text = "\(formatValue(value))"
             label.font = label.font.withSize(labelSize)
             label.textColor = labelsTextColor
-            label.textAlignment = .center
+            label.textAlignment = labelsAlignment == .left ? .left : .right
             addSubview(label)
         }
         
