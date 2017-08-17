@@ -13,8 +13,8 @@
 		A8CC24891E363656007E1E03 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8CC24871E363656007E1E03 /* Main.storyboard */; };
 		A8CC248B1E363656007E1E03 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8CC248A1E363656007E1E03 /* Assets.xcassets */; };
 		A8CC248E1E363656007E1E03 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8CC248C1E363656007E1E03 /* LaunchScreen.storyboard */; };
-		B8913AD81F45A6B60011EB02 /* GraphLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8913AD61F45A6B60011EB02 /* GraphLayer.swift */; };
-		B8913AD91F45A6B60011EB02 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8913AD71F45A6B60011EB02 /* GraphView.swift */; };
+		B8913ADC1F45C7830011EB02 /* GraphLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8913ADA1F45C7830011EB02 /* GraphLayer.swift */; };
+		B8913ADD1F45C7830011EB02 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8913ADB1F45C7830011EB02 /* GraphView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,8 +26,8 @@
 		A8CC248A1E363656007E1E03 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A8CC248D1E363656007E1E03 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A8CC248F1E363656007E1E03 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B8913AD61F45A6B60011EB02 /* GraphLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphLayer.swift; sourceTree = "<group>"; };
-		B8913AD71F45A6B60011EB02 /* GraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
+		B8913ADA1F45C7830011EB02 /* GraphLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphLayer.swift; sourceTree = "<group>"; };
+		B8913ADB1F45C7830011EB02 /* GraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,8 +52,8 @@
 		A88EE0191E4B7BFC000FE5A6 /* Graph */ = {
 			isa = PBXGroup;
 			children = (
-				B8913AD61F45A6B60011EB02 /* GraphLayer.swift */,
-				B8913AD71F45A6B60011EB02 /* GraphView.swift */,
+				B8913ADA1F45C7830011EB02 /* GraphLayer.swift */,
+				B8913ADB1F45C7830011EB02 /* GraphView.swift */,
 			);
 			path = Graph;
 			sourceTree = "<group>";
@@ -165,8 +165,8 @@
 			files = (
 				A8CC24861E363656007E1E03 /* ViewController.swift in Sources */,
 				A8CC24841E363656007E1E03 /* AppDelegate.swift in Sources */,
-				B8913AD91F45A6B60011EB02 /* GraphView.swift in Sources */,
-				B8913AD81F45A6B60011EB02 /* GraphLayer.swift in Sources */,
+				B8913ADD1F45C7830011EB02 /* GraphView.swift in Sources */,
+				B8913ADC1F45C7830011EB02 /* GraphLayer.swift in Sources */,
 				A82C5B231E68B93200ACA464 /* Array+Shuffle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
