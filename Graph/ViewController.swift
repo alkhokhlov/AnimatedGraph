@@ -66,7 +66,11 @@ class ViewController: UIViewController {
         }
         
         animateToMinValues = !animateToMinValues
-        graphView.animate(withPoints: points, columnNames: nil, animateToMinValues: animateToMinValues)
+        if animateToMinValues {
+            graphView.animate(toMinValue: true)
+        } else {
+            graphView.animate(withPoints: points, columnNames: nil)
+        }
     }
 
 }

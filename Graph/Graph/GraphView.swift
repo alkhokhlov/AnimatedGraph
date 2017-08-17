@@ -18,11 +18,15 @@ protocol GraphViewUsageProtocol {
     ///   - title: Title of graph
     func configure(withPoints points: [Double], columnNames: [String]?, title: String?)
 
+    
+    /// Animate Graph to min values
+    func animate(toMinValue: Bool)
+    
     /// Use this method to animate graph with other points and column names.
     /// - Parameters:
     ///   - points: Array of points
     ///   - columnNames: Array of column names
-    func animate(withPoints points: [Double], columnNames: [String]?, animateToMinValues: Bool)
+    func animate(withPoints points: [Double], columnNames: [String]?)
 }
 
 class GraphView: UIView, GraphViewUsageProtocol {
@@ -115,7 +119,42 @@ class GraphView: UIView, GraphViewUsageProtocol {
     
     // MARK: - Public
     
-    func animate(withPoints points: [Double], columnNames: [String]?, animateToMinValues: Bool = false) {
+    func animate(toMinValue: Bool) {
+        animate(withPoints: graphPoints, columnNames: graphColumnNames, animateToMinValues: toMinValue)
+    }
+    
+    func animate(withPoints points: [Double], columnNames: [String]?) {
+        animate(withPoints: points, columnNames: columnNames, animateToMinValues: false)
+    }
+    
+    func configure(withPoints points: [Double], columnNames: [String]?, title: String?) {
+        if let columnNames = columnNames {
+            assert(points.count == columnNames.count, "'points' and 'columns' count must be the same")
+            graphColumnNames = columnNames
+        }
+        
+        graphPoints = points
+        graphGradientLayer.colors = [startGraphColor.cgColor, endGraphColor.cgColor]
+        graphLineLayer.strokeColor = graphLineColor.cgColor
+        graphLineLayer.fillColor = UIColor.clear.cgColor
+        graphLineLayer.lineWidth = lineWidth
+        
+        if isEnabledDots {
+            for _ in 0..<graphPoints.count {
+                let circleLayer = CAShapeLayer()
+                layer.addSublayer(circleLayer)
+                dotsLayer.append(circleLayer)
+            }
+        }
+
+        if let title = title {
+            self.title = title
+        }
+    }
+    
+    // MARK: - Private
+    
+    private func animate(withPoints points: [Double], columnNames: [String]?, animateToMinValues: Bool) {
         graphLayer.isAnimatingMinValues = animateToMinValues
         
         if let columnNames = columnNames {
@@ -192,33 +231,6 @@ class GraphView: UIView, GraphViewUsageProtocol {
         removeLabels()
         addLabels()
     }
-    
-    func configure(withPoints points: [Double], columnNames: [String]?, title: String?) {
-        if let columnNames = columnNames {
-            assert(points.count == columnNames.count, "'points' and 'columns' count must be the same")
-            graphColumnNames = columnNames
-        }
-        
-        graphPoints = points
-        graphGradientLayer.colors = [startGraphColor.cgColor, endGraphColor.cgColor]
-        graphLineLayer.strokeColor = graphLineColor.cgColor
-        graphLineLayer.fillColor = UIColor.clear.cgColor
-        graphLineLayer.lineWidth = lineWidth
-        
-        if isEnabledDots {
-            for _ in 0..<graphPoints.count {
-                let circleLayer = CAShapeLayer()
-                layer.addSublayer(circleLayer)
-                dotsLayer.append(circleLayer)
-            }
-        }
-
-        if let title = title {
-            self.title = title
-        }
-    }
-    
-    // MARK: - Private
     
     private func removeLabels() {
         for subview in subviews {
