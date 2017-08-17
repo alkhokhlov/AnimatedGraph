@@ -22,7 +22,7 @@ protocol GraphViewUsageProtocol {
     /// - Parameters:
     ///   - points: Array of points
     ///   - columnNames: Array of column names
-    func animate(withPoints points: [Double], columnNames: [String]?)
+    func animate(withPoints points: [Double], columnNames: [String]?, animateToMinValues: Bool)
 }
 
 class GraphView: UIView, GraphViewUsageProtocol {
@@ -115,7 +115,9 @@ class GraphView: UIView, GraphViewUsageProtocol {
     
     // MARK: - Public
     
-    func animate(withPoints points: [Double], columnNames: [String]?) {
+    func animate(withPoints points: [Double], columnNames: [String]?, animateToMinValues: Bool = false) {
+        graphLayer.isAnimatingMinValues = animateToMinValues
+        
         if let columnNames = columnNames {
             assert(points.count == columnNames.count, "'points' and 'columns' count must be the same")
             
@@ -132,7 +134,7 @@ class GraphView: UIView, GraphViewUsageProtocol {
         
         var animation = CABasicAnimation(keyPath: "path")
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        animation.fromValue = graphLayer.rectangle(withPoints: graphLayer.graphPoints).cgPath
+        animation.fromValue = graphLayer.previousPath.cgPath
         animation.toValue = graphLayer.rectangle(withPoints: points).cgPath
         animation.duration = 0.4
         animation.fillMode = kCAFillModeForwards

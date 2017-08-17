@@ -15,6 +15,8 @@ class GraphLayer: CAShapeLayer {
     var graphHeight: CGFloat!
     var graphWidth: CGFloat!
     var highestYPoint: CGFloat!
+    var isAnimatingMinValues = false
+    var previousPath: UIBezierPath!
     var padding: UIEdgeInsets = UIEdgeInsets(top: 24.0, left: 16.0, bottom: 40.0, right: 64.0)
     
     func fillProperties(points: [Double]) {
@@ -53,12 +55,14 @@ class GraphLayer: CAShapeLayer {
             y: bounds.height))
         clippingPath.close()
         
-        return clippingPath
+        previousPath = clippingPath
+        
+        return previousPath
     }
     
     func columnYPoint(graphPoint: Double) -> CGFloat {
         var y = CGFloat((graphPoint - graphPoints.min()!) / (graphPoints.max()! - graphPoints.min()!))
-        y = graphHeight + padding.top - y * graphHeight
+        y = graphHeight + padding.top - (isAnimatingMinValues ? 0.0 : y) * graphHeight
         return y
     }
     

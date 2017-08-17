@@ -11,6 +11,7 @@ import UIKit
 class ViewController: UIViewController {
     
     var graphView: GraphView!
+    var animateToMinValues = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +36,7 @@ class ViewController: UIViewController {
         graphView.labelsTextColor = UIColor(red: 46.0/255.0, green: 195.0/255.0, blue: 151.0/255.0, alpha: 1.0)
         graphView.linesWidth = 0.5
         graphView.maxHorizontalLines = 4
-        graphView.maxVerticalLines = 10
+        graphView.maxVerticalLines = 12
         graphView.numberFormatter = { value in
             let numberFormatter = NumberFormatter()
             numberFormatter.numberStyle = .currency
@@ -64,7 +65,8 @@ class ViewController: UIViewController {
             points.append(point)
         }
         
-        graphView.animate(withPoints: points, columnNames: nil)
+        animateToMinValues = !animateToMinValues
+        graphView.animate(withPoints: points, columnNames: nil, animateToMinValues: animateToMinValues)
     }
 
 }
