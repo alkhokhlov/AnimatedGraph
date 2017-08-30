@@ -10,25 +10,33 @@ in more attractive way
 5. Configure GraphView with method
 
 ```swift
-/// At first you need to configure graph with launch data. IMPORTANT!!! Count of 
-/// column names and points must be same
+/// At first you need to configure graph with launch data.
 ///
 /// - Parameters:
 ///   - points: Launch array of points
 ///   - columnNames: Bottom located column names.
 ///   - title: Title of graph
-func configure(withPoints points: [Double], columnNames: [String], title: String?)
+func configure(withPoints points: [Double], columnNames: [String]?, title: String?)
+
+
+/// Animate Graph to min values
+func animateToMinValues()
+
+/// Use this method to animate graph with other points and column names.
+/// - Parameters:
+///   - points: Array of points
+///   - columnNames: Array of column names
+func animate(withPoints points: [Double], columnNames: [String]?)
 ```
 
 6. To animate use method
 
 ```swift
-/// Use this method to animate graph with other points and column names. IMPORTANT!!! Count of
-/// old and current points and column names must be same
+/// Use this method to animate graph with other points and column names.
 /// - Parameters:
 ///   - points: Array of points
 ///   - columnNames: Array of column names
-func animate(withPoints points: [Double], columnNames: [String])
+func animate(withPoints points: [Double], columnNames: [String]?)
 ```
 
 If you have problems, just look at the example of usage in _ViewController.swift_

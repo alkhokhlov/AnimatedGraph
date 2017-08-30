@@ -17,10 +17,10 @@ protocol GraphViewUsageProtocol {
     ///   - columnNames: Bottom located column names.
     ///   - title: Title of graph
     func configure(withPoints points: [Double], columnNames: [String]?, title: String?)
-
+    
     
     /// Animate Graph to min values
-    func animate(toMinValue: Bool)
+    func animateToMinValues()
     
     /// Use this method to animate graph with other points and column names.
     /// - Parameters:
@@ -93,34 +93,12 @@ class GraphView: UIView, GraphViewUsageProtocol {
         super.layoutSubviews()
         
         graphLayer.frame.size = frame.size
-        
-        removeLabels()
-        
-        graphLayer.fillProperties(points: graphPoints)
-        
-        graphGradientLayer.frame = bounds
-        graphGradientLayer.startPoint = CGPoint(x: 0.5, y: graphLayer.highestYPoint / bounds.size.height)
-        graphGradientLayer.endPoint = CGPoint(x: 0.5, y: 1)
-        
-        graphLineLayer.path = graphLayer.graphPath.cgPath
-        
-        titleLabel()
-        
-        if isEnabledLines {
-            drawLines()
-        }
-        
-        addLabels()
-        
-        if isEnabledDots {
-            drawDots()
-        }
     }
     
     // MARK: - Public
     
-    func animate(toMinValue: Bool) {
-        animate(withPoints: graphPoints, columnNames: graphColumnNames, animateToMinValues: toMinValue)
+    func animateToMinValues() {
+        animate(withPoints: graphPoints, columnNames: graphColumnNames, animateToMinValues: true)
     }
     
     func animate(withPoints points: [Double], columnNames: [String]?) {
@@ -146,9 +124,33 @@ class GraphView: UIView, GraphViewUsageProtocol {
                 dotsLayer.append(circleLayer)
             }
         }
-
+        
         if let title = title {
             self.title = title
+        }
+        
+        removeLabels()
+        
+        if graphPoints.count > 0 {
+            graphLayer.fillProperties(points: graphPoints)
+            
+            graphGradientLayer.frame = bounds
+            graphGradientLayer.startPoint = CGPoint(x: 0.5, y: graphLayer.highestYPoint / bounds.size.height)
+            graphGradientLayer.endPoint = CGPoint(x: 0.5, y: 1)
+            
+            graphLineLayer.path = graphLayer.graphPath.cgPath
+            
+            titleLabel()
+            
+            if isEnabledLines {
+                drawLines()
+            }
+            
+            addLabels()
+            
+            if isEnabledDots {
+                drawDots()
+            }
         }
     }
     
@@ -307,10 +309,10 @@ class GraphView: UIView, GraphViewUsageProtocol {
         // side labels
         for i in 0...(maxHorizontalLines - 1) {
             let label = UILabel(frame: CGRect(x: labelsAlignment == .left ? 0 : bounds.width - graphLayer.padding.right,
-                                          y: graphLayer.graphHeight/CGFloat((maxHorizontalLines - 1))*CGFloat(maxHorizontalLines - 1 - i) + graphLayer.padding.top - labelHeight/2,
-                                          width: labelsAlignment == .left ? graphLayer.padding.left : graphLayer.padding.right,
-                                          height: labelHeight))
-
+                                              y: graphLayer.graphHeight/CGFloat((maxHorizontalLines - 1))*CGFloat(maxHorizontalLines - 1 - i) + graphLayer.padding.top - labelHeight/2,
+                                              width: labelsAlignment == .left ? graphLayer.padding.left : graphLayer.padding.right,
+                                              height: labelHeight))
+            
             let value = (1.0 / Double(maxHorizontalLines - 1) * Double(i) ) * (graphPoints.max()! - graphPoints.min()!) + graphPoints.min()!
             label.text = "\(formatValue(value))"
             label.font = label.font.withSize(labelSize)
@@ -328,9 +330,9 @@ class GraphView: UIView, GraphViewUsageProtocol {
                 let pointX = graphLayer.columnXPoint(column: i)
                 
                 let label = UILabel(frame: CGRect(x: pointX - graphLayer.padding.left/2,
-                                              y: pointY - labelHeight/2,
-                                              width: labelsAlignment == .left ? graphLayer.padding.left : graphLayer.padding.right,
-                                              height: labelHeight))
+                                                  y: pointY - labelHeight/2,
+                                                  width: labelsAlignment == .left ? graphLayer.padding.left : graphLayer.padding.right,
+                                                  height: labelHeight))
                 label.text = String(describing: graphColumnNames[i])
                 label.font = label.font.withSize(labelSize)
                 label.textColor = fontColor
@@ -356,7 +358,7 @@ class GraphView: UIView, GraphViewUsageProtocol {
             circleLayer.fillColor = fontColor.cgColor
         }
     }
-
+    
     override func draw(_ rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()
         let colors = [startColor.cgColor, endColor.cgColor] as CFArray
@@ -375,5 +377,5 @@ class GraphView: UIView, GraphViewUsageProtocol {
                                     end: endPoint,
                                     options: CGGradientDrawingOptions(rawValue: 0))
     }
-
+    
 }
