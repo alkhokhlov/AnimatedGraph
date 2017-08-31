@@ -308,9 +308,10 @@ class GraphView: UIView, GraphViewUsageProtocol {
         
         // side labels
         for i in 0...(maxHorizontalLines - 1) {
-            let label = UILabel(frame: CGRect(x: labelsAlignment == .left ? 0 : bounds.width - graphLayer.padding.right,
+            let padding: CGFloat = 4.0
+            let label = UILabel(frame: CGRect(x: labelsAlignment == .left ? 0.0 : bounds.width - graphLayer.padding.right + padding,
                                               y: graphLayer.graphHeight/CGFloat((maxHorizontalLines - 1))*CGFloat(maxHorizontalLines - 1 - i) + graphLayer.padding.top - labelHeight/2,
-                                              width: labelsAlignment == .left ? graphLayer.padding.left : graphLayer.padding.right,
+                                              width: labelsAlignment == .left ? graphLayer.padding.left - padding : graphLayer.padding.right - padding,
                                               height: labelHeight))
             
             let value = (1.0 / Double(maxHorizontalLines - 1) * Double(i) ) * (graphPoints.max()! - graphPoints.min()!) + graphPoints.min()!
