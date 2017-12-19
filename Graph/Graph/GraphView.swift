@@ -106,6 +106,8 @@ class GraphView: UIView, GraphViewUsageProtocol {
     }
     
     func configure(withPoints points: [Double], columnNames: [String]?, title: String?) {
+        layoutSubviews()
+        
         if let columnNames = columnNames {
             assert(points.count == columnNames.count, "'points' and 'columns' count must be the same")
             graphColumnNames = columnNames
@@ -146,7 +148,7 @@ class GraphView: UIView, GraphViewUsageProtocol {
                 drawLines()
             }
             
-            addLabels()
+            drawLabels()
             
             if isEnabledDots {
                 drawDots()
@@ -180,6 +182,7 @@ class GraphView: UIView, GraphViewUsageProtocol {
         animation.duration = 0.4
         animation.fillMode = kCAFillModeForwards
         animation.isRemovedOnCompletion = false
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         graphLayer.add(animation, forKey: "path")
         
         let currentHighestY = graphLayer.highestYPoint
@@ -192,6 +195,7 @@ class GraphView: UIView, GraphViewUsageProtocol {
         animation.duration = 0.4
         animation.fillMode = kCAFillModeForwards
         animation.isRemovedOnCompletion = false
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         graphGradientLayer.add(animation, forKey: "startPoint")
         
         animation = CABasicAnimation(keyPath: "path")
@@ -201,6 +205,7 @@ class GraphView: UIView, GraphViewUsageProtocol {
         animation.duration = 0.4
         animation.fillMode = kCAFillModeForwards
         animation.isRemovedOnCompletion = false
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         graphLineLayer.add(animation, forKey: "path")
         
         if isEnabledDots {
@@ -215,12 +220,12 @@ class GraphView: UIView, GraphViewUsageProtocol {
                                                          size: CGSize(width: 5.0, height: 5.0)))
                 
                 animation = CABasicAnimation(keyPath: "path")
-                animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
                 animation.fromValue = dot.path
                 animation.toValue = circle.cgPath
                 animation.duration = 0.4
                 animation.fillMode = kCAFillModeForwards
                 animation.isRemovedOnCompletion = false
+                animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
                 dot.add(animation, forKey: "path")
                 
                 i += 1
@@ -231,7 +236,7 @@ class GraphView: UIView, GraphViewUsageProtocol {
         
         graphPoints = points
         removeLabels()
-        addLabels()
+        drawLabels()
     }
     
     private func removeLabels() {
@@ -302,7 +307,7 @@ class GraphView: UIView, GraphViewUsageProtocol {
         return numberFormatter(value).string(from: NSDecimalNumber(decimal: decimal))!
     }
     
-    private func addLabels() {
+    private func drawLabels() {
         let labelHeight: CGFloat = 12.0
         let labelSize: CGFloat = 11.0
         

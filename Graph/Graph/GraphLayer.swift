@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GraphLayer: CAShapeLayer {
+final class GraphLayer: CAShapeLayer {
     
     var graphPoints: [Double] = []
     var graphPath: UIBezierPath!
@@ -17,7 +17,7 @@ class GraphLayer: CAShapeLayer {
     var highestYPoint: CGFloat!
     var isAnimatingMinValues = false
     var previousPath: UIBezierPath!
-    var padding: UIEdgeInsets = UIEdgeInsets(top: 24.0, left: 16.0, bottom: 40.0, right: 64.0)
+    var padding: UIEdgeInsets = UIEdgeInsets(top: 24.0, left: 0.0, bottom: 40.0, right: 44.0)
     
     func fillProperties(points: [Double]) {
         graphPoints = points

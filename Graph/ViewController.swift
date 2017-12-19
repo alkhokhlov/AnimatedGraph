@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        graphView = GraphView(frame: CGRect(x: 0.0, y: 100.0, width: 300.0, height: 250.0))
+        graphView = GraphView(frame: CGRect(x: UIScreen.main.bounds.width / 2.0 - 150.0, y: 100.0, width: 300.0, height: 250.0))
         view.addSubview(graphView)
         
         graphView.clipsToBounds = true
@@ -65,12 +65,7 @@ class ViewController: UIViewController {
             points.append(point)
         }
         
-        animateToMinValues = !animateToMinValues
-        if animateToMinValues {
-            graphView.animate(toMinValue: true)
-        } else {
-            graphView.animate(withPoints: points, columnNames: nil)
-        }
+        graphView.animate(withPoints: points, columnNames: nil)
     }
 
 }
